@@ -47,10 +47,10 @@ for domain in "${domains[@]}";do
 "msgtype": "markdown",
 "markdown": {
   "content":"
-##### 小程序error报警 \n
->  ##### <font color=#67C23A> 【域名】</font> :<font color=#FF0000> $domain ssl 过期告警 </font> \n
+##### 域名ssl过期报警 \n
+>  ##### <font color=#67C23A> 【域名】</font> :<font color=#FF0000>  ssl 过期告警 </font> \n
 >  ##### <font color=#67C23A> 【告警时间】</font> :<font color=#FF0000> $CURRENT_TIME </font> \n
->  ##### <font color=#67C23A> 【告警内容】</font>:<font color=#FF0000>ssl剩余天数，不足 $THRESHOLD  天, 当前剩余天数 $remaining_days </font> \n
+>  ##### <font color=#67C23A> 【告警内容】</font>:<font color=#FF0000> $domain ssl剩余天数，不足 $THRESHOLD  天, 当前剩余天数 $remaining_days </font> \n
 "
 }
 }
