@@ -34,7 +34,7 @@ for domain in "${domains[@]}";do
     # 计算剩余天数
     remaining_days=$(( ($expiry_timestamp - $current_timestamp) / 86400 ))
     echo "剩余天数： "$remaining_days
-    if [ $remaining_days -lt $THRESHOLD ];then
+    if [ $remaining_days -le $THRESHOLD ];then
        echo "证书 $domain 的过期日期为 $expiry_date，剩余 $remaining_days 天过期。"
 
         # 构建payload
