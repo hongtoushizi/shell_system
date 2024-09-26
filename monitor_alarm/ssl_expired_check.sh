@@ -1,24 +1,20 @@
 #!/bin/bash
 
-
 # 钉钉 Webhook URL，替换成实际的 Webhook 地址
 WEBHOOK_URL="https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=1f61ca30-866b-462b-901b-42d488a1a4f3"
 
-
 # 获取当天的日期，格式为 "日"
-TODAY=$(date '+%d')
-
-LOG_FILE="/www/wwwroot/new-bwc/runtime/logs/${TODAY}.log"
-
-echo "日志文件路径: $LOG_FILE"
 
 # 设置警告阈值
-THRESHOLD=10
+THRESHOLD=15
 
 # 获取当前时间
 CURRENT_TIME=$(date +"%Y-%m-%d %H:%M:%S")
 # 指定获取证书信息的域名
-domains=("test-channel.dadoyi.com" "test-channel2.dadoyi.com")
+domains=( "yqh.yinquanhang888.com"
+          "oms-admin.yinquanhang888.com"
+          "pay-api.yinquanhang888.com"
+ )
 
 for domain in "${domains[@]}";do
     # 使用 OpenSSL 获取证书信息
