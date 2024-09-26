@@ -22,20 +22,18 @@ LOG_FILE="/www/wwwroot/new-bwc/runtime/logs/${CURRENT_YEAR_MONTH}/${TODAY}.log"
 echo "日志文件路径: $LOG_FILE"
 
 
-# 每5秒循环一次
-while true;do
-   # 读取最新的1000条日志
-   LATEST_LOGS=$(tail -n "$MAX_LINE_NUM" "$LOG_FILE")
+ # 读取最新的1000条日志
+ LATEST_LOGS=$(tail -n "$MAX_LINE_NUM" "$LOG_FILE")
 
-   # 统计错误数量，假设错误日志包含 "ERROR" 关键字
-   ERROR_COUNT=$(echo "$LATEST_LOGS" | grep -c "ERROR")
+ # 统计错误数量，假设错误日志包含 "ERROR" 关键字
+ ERROR_COUNT=$(echo "$LATEST_LOGS" | grep -c "ERROR")
 
-   echo "$(date '+%Y-%m-%d %H:%M:%S') - 最新${MAX_LINE_NUM}条日志中的错误数量:$ERROR_COUNT"
+ echo "$(date '+%Y-%m-%d %H:%M:%S') - 最新${MAX_LINE_NUM}条日志中的错误数量:$ERROR_COUNT"
 
-   if [ "$ERROR_COUNT" -ge "$THRESHOLD" ];then
-       # 构造报警消息
+ if [ "$ERROR_COUNT" -ge "$THRESHOLD" ];then
+     # 构造报警消息
 
-    # 构建payload
+  # 构建payload
     MESSAGE=$(cat <<-EOF
 {
 "msgtype": "markdown",
@@ -50,20 +48,18 @@ while true;do
 }
 }
 EOF
-    )
+)
 
-       # 发送报警消息
-       curl -s -X POST \
-           -H "Content-Type:application/json" \
-           -d "$MESSAGE" \
-           "$WEBHOOK_URL"
+   # 发送报警消息
+   curl -s -X POST \
+       -H "Content-Type:application/json" \
+       -d "$MESSAGE" \
+       "$WEBHOOK_URL"
 
-       echo "$(date '+%Y-%m-%d %H:%M:%S') - 已发送企业微信报警消息"
-   fi
+   echo "$(date '+%Y-%m-%d %H:%M:%S') - 已发送企业微信报警消息"
+fi
 
-   # 等待5秒后再次进行检查
-   sleep 5
-done
+
 
 
 
