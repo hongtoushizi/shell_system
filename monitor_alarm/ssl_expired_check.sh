@@ -16,50 +16,58 @@ domains=( "yqh.yinquanhang888.com"
           "pay-api.yinquanhang888.com"
  )
 
-for domain in "${domains[@]}";do
-    # 使用 OpenSSL 获取证书信息
-    cert_info=$(echo | openssl s_client -servername $domain -connect $domain:443 2>/dev/null | openssl x509 -noout -dates)
+# 每5秒循环一次
+while true;do
 
-    # 提取过期日期
-    expiry_date=$(echo $cert_info | grep -o "notAfter=.*" | cut -d= -f2)
-    echo  $expiry_date
+  for domain in "${domains[@]}";do
+      # 使用 OpenSSL 获取证书信息
+      cert_info=$(echo | openssl s_client -servername $domain -connect $domain:443 2>/dev/null | openssl x509 -noout -dates)
 
-    # 将日期字符串转换为时间戳
-    expiry_timestamp=$(date -d "$expiry_date" "+%s")
-    echo $expiry_timestamp
+      # 提取过期日期
+      expiry_date=$(echo $cert_info | grep -o "notAfter=.*" | cut -d= -f2)
+      echo  $expiry_date
 
-    # 获取当前日期时间戳
-    current_timestamp=$(date "+%s")
+      # 将日期字符串转换为时间戳
+      expiry_timestamp=$(date -d "$expiry_date" "+%s")
+      echo $expiry_timestamp
 
-    # 计算剩余天数
-    remaining_days=$(( ($expiry_timestamp - $current_timestamp) / 86400 ))
-    echo "剩余天数： "$remaining_days
-    if [ $remaining_days -le $THRESHOLD ];then
-       echo "证书 $domain 的过期日期为 $expiry_date，剩余 $remaining_days 天过期。"
+      # 获取当前日期时间戳
+      current_timestamp=$(date "+%s")
 
-        # 构建payload
-          MESSAGE=$(cat <<-EOF
-{
-"msgtype": "markdown",
-"markdown": {
-  "content":"
-##### 域名ssl过期报警 \n
->  ##### <font color=#67C23A> 【域名】</font> :<font color=#FF0000> $domain  </font> \n
->  ##### <font color=#67C23A> 【告警时间】</font> :<font color=#FF0000> $CURRENT_TIME </font> \n
->  ##### <font color=#67C23A> 【告警内容】</font>:<font color=#FF0000>  ssl剩余天数，不足 $THRESHOLD  天, 当前剩余天数 $remaining_days </font> \n
-"
-}
-}
+      # 计算剩余天数
+      remaining_days=$(( ($expiry_timestamp - $current_timestamp) / 86400 ))
+      echo "剩余天数： "$remaining_days
+      if [ $remaining_days -le $THRESHOLD ];then
+         echo "证书 $domain 的过期日期为 $expiry_date，剩余 $remaining_days 天过期。"
+
+          # 构建payload
+            MESSAGE=$(cat <<-EOF
+  {
+  "msgtype": "markdown",
+  "markdown": {
+    "content":"
+  ##### 域名ssl过期报警 \n
+  >  ##### <font color=#67C23A> 【域名】</font> :<font color=#FF0000> $domain  </font> \n
+  >  ##### <font color=#67C23A> 【告警时间】</font> :<font color=#FF0000> $CURRENT_TIME </font> \n
+  >  ##### <font color=#67C23A> 【告警内容】</font>:<font color=#FF0000>  ssl剩余天数，不足 $THRESHOLD  天, 当前剩余天数 $remaining_days </font> \n
+  "
+  }
+  }
 EOF
-          )
+  )
 
-             # 发送报警消息
-             curl -s -X POST \
-                 -H "Content-Type:application/json" \
-                 -d "$MESSAGE" \
-                 "$WEBHOOK_URL"
+   # 发送报警消息
+   curl -s -X POST \
+       -H "Content-Type:application/json" \
+       -d "$MESSAGE" \
+       "$WEBHOOK_URL"
 
 
-    fi
+      fi
+  done
+
+   # 等待5秒后再次进行检查
+  sleep 60
 done
+
 
