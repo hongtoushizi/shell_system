@@ -6,7 +6,7 @@ WEBHOOK_URL="https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=1f61ca30-866b-
 THRESHOLD=5
 
 # 最新的行数
-MAX_LINE_NUM=1000
+MAX_LINE_NUM=300000
 
 # 当前日期
 CURRENT_TIME=$(date +"%Y-%m-%d %H:%M:%S")
@@ -14,7 +14,8 @@ CURRENT_TIME=$(date +"%Y-%m-%d %H:%M:%S")
 HOSTNAME=$(hostname)
 IP=$(hostname -I)
 # 获取当天的日期，格式为 "日"
-TODAY=$(date '+%d')
+TODAY=$(date '+%Y-%m-%d')
+
 CURRENT_YEAR_MONTH=$(date '+%Y%m')
 
 LOG_FILE="/www/wwwroot/new-bwc/runtime/logs/${CURRENT_YEAR_MONTH}/${TODAY}.log"
