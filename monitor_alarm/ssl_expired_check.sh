@@ -14,6 +14,8 @@ CURRENT_TIME=$(date +"%Y-%m-%d %H:%M:%S")
 domains=( "yqh.yinquanhang888.com"
           "oms-admin.yinquanhang888.com"
           "pay-api.yinquanhang888.com"
+          "api.yinquanhang888.com"
+          "api3.yinquanhang888.com"
  )
 
 # 每5秒循环一次
