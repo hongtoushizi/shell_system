@@ -16,6 +16,9 @@ domains=( "yqh.yinquanhang888.com"
           "pay-api.yinquanhang888.com"
           "api.yinquanhang888.com"
           "api3.yinquanhang888.com"
+          "www.yinquanhang888.com"
+          "meiri.yinquanhang888.com"
+          "meiri-webapi.yinquanhang888.com"
  )
 
 # 每5秒循环一次
