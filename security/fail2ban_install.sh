@@ -58,6 +58,7 @@ fi
 # 修改 ExecStart 为实际路径
 sudo sed -i "s|ExecStart=.*|ExecStart=$FAIL2BAN_SERVER -xf start|" "$SERVICE_FILE"
 
+
 # 重新加载 systemd
 sudo systemctl daemon-reload
 
